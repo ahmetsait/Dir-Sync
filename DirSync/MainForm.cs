@@ -298,6 +298,8 @@ namespace DirSync
 
 		private void MainForm_FormClosed(object sender, FormClosedEventArgs e)
 		{
+			if (!Directory.Exists(Program.configPath))
+				Directory.CreateDirectory(Path.GetDirectoryName(Program.configPath));
 			File.WriteAllText(Program.configPath, textBox_PathComputer.Text + Environment.NewLine + textBox_PathDesktop.Text, Encoding.Default);
 		}
 
@@ -403,9 +405,9 @@ namespace DirSync
 			{
 				foreach (ListViewItem item in listView.Items)
 				{
-
-				}
 					//TODO: Implement baking
+				}
+
 				progressBar.Value = progressBar.Minimum;
 				backgroundWorker_Bake.RunWorkerAsync();
 			}
@@ -417,10 +419,10 @@ namespace DirSync
 		{
 			lock (bakeLock)
 			{
-
+				//TODO: Implement baking
 			}
 		}
-				//TODO: Implement baking
+
 		private void backgroundWorker_Bake_ProgressChanged(object sender, ProgressChangedEventArgs e)
 		{
 
