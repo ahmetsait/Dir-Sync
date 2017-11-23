@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DirSync
 {
@@ -68,10 +65,8 @@ namespace DirSync
 		/// </summary>
 		public static bool isRelevant(this FileSystemInfo fileSystemInfo)
 		{
-			return true;
-			//return (!fileSystemInfo.Attributes.HasFlag(FileAttributes.System) 
-			//	&& !fileSystemInfo.Attributes.HasFlag(FileAttributes.ReadOnly)
-			//	&& !fileSystemInfo.Attributes.HasFlag(FileAttributes.Hidden));
+			return (!fileSystemInfo.Attributes.HasFlag(FileAttributes.System) &&
+				!fileSystemInfo.Attributes.HasFlag(FileAttributes.ReadOnly));
 		}
 	}
 }
