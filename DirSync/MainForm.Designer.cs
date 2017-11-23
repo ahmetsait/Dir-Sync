@@ -76,7 +76,6 @@
             this.columnHeader_LastChange2,
             this.columnHeader_Path2,
             this.columnHeader_Size2});
-			this.listView.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
 			this.listView.FullRowSelect = true;
 			this.listView.GridLines = true;
 			listViewGroup1.Header = "Directories";
@@ -86,10 +85,11 @@
 			this.listView.Groups.AddRange(new System.Windows.Forms.ListViewGroup[] {
             listViewGroup1,
             listViewGroup2});
-			this.listView.Location = new System.Drawing.Point(16, 15);
-			this.listView.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+			this.listView.Location = new System.Drawing.Point(13, 15);
+			this.listView.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
+			this.listView.MultiSelect = false;
 			this.listView.Name = "listView";
-			this.listView.Size = new System.Drawing.Size(745, 408);
+			this.listView.Size = new System.Drawing.Size(756, 430);
 			this.listView.TabIndex = 1;
 			this.listView.UseCompatibleStateImageBehavior = false;
 			this.listView.View = System.Windows.Forms.View.Details;
@@ -98,7 +98,7 @@
 			// 
 			// columnHeader_Path1
 			// 
-			this.columnHeader_Path1.Text = "Path 1";
+			this.columnHeader_Path1.Text = "<- Path";
 			this.columnHeader_Path1.Width = 73;
 			// 
 			// columnHeader_Size1
@@ -124,7 +124,7 @@
 			// 
 			// columnHeader_Path2
 			// 
-			this.columnHeader_Path2.Text = "Path 2";
+			this.columnHeader_Path2.Text = "Path ->";
 			this.columnHeader_Path2.Width = 90;
 			// 
 			// columnHeader_Size2
@@ -135,10 +135,10 @@
 			// 
 			this.button_Sync.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-			this.button_Sync.Location = new System.Drawing.Point(340, 464);
-			this.button_Sync.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+			this.button_Sync.Location = new System.Drawing.Point(341, 489);
+			this.button_Sync.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
 			this.button_Sync.Name = "button_Sync";
-			this.button_Sync.Size = new System.Drawing.Size(100, 28);
+			this.button_Sync.Size = new System.Drawing.Size(103, 38);
 			this.button_Sync.TabIndex = 3;
 			this.button_Sync.Text = "Sync";
 			this.toolTip.SetToolTip(this.button_Sync, "Find conflicts of the directories");
@@ -148,47 +148,45 @@
 			// textBox_PathDesktop
 			// 
 			this.textBox_PathDesktop.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-			this.textBox_PathDesktop.Location = new System.Drawing.Point(448, 466);
-			this.textBox_PathDesktop.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+			this.textBox_PathDesktop.Location = new System.Drawing.Point(451, 492);
+			this.textBox_PathDesktop.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
 			this.textBox_PathDesktop.Name = "textBox_PathDesktop";
-			this.textBox_PathDesktop.Size = new System.Drawing.Size(271, 22);
+			this.textBox_PathDesktop.Size = new System.Drawing.Size(275, 27);
 			this.textBox_PathDesktop.TabIndex = 4;
 			// 
 			// button_BrowseDesktop
 			// 
 			this.button_BrowseDesktop.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-			this.button_BrowseDesktop.AutoSize = true;
 			this.button_BrowseDesktop.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-			this.button_BrowseDesktop.Location = new System.Drawing.Point(733, 465);
-			this.button_BrowseDesktop.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+			this.button_BrowseDesktop.Location = new System.Drawing.Point(734, 489);
+			this.button_BrowseDesktop.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
 			this.button_BrowseDesktop.Name = "button_BrowseDesktop";
-			this.button_BrowseDesktop.Size = new System.Drawing.Size(30, 27);
+			this.button_BrowseDesktop.Size = new System.Drawing.Size(35, 28);
 			this.button_BrowseDesktop.TabIndex = 3;
 			this.button_BrowseDesktop.Text = "...";
-			this.button_BrowseDesktop.UseVisualStyleBackColor = true;
+			this.toolTip.SetToolTip(this.button_BrowseDesktop, "Choose a Folder");
 			this.button_BrowseDesktop.Click += new System.EventHandler(this.button_BrowseDesktop_Click);
 			// 
 			// button_BrowseComputer
 			// 
 			this.button_BrowseComputer.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-			this.button_BrowseComputer.AutoSize = true;
 			this.button_BrowseComputer.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-			this.button_BrowseComputer.Location = new System.Drawing.Point(16, 465);
-			this.button_BrowseComputer.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+			this.button_BrowseComputer.Location = new System.Drawing.Point(13, 489);
+			this.button_BrowseComputer.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
 			this.button_BrowseComputer.Name = "button_BrowseComputer";
-			this.button_BrowseComputer.Size = new System.Drawing.Size(30, 27);
+			this.button_BrowseComputer.Size = new System.Drawing.Size(35, 28);
 			this.button_BrowseComputer.TabIndex = 3;
 			this.button_BrowseComputer.Text = "...";
-			this.button_BrowseComputer.UseVisualStyleBackColor = true;
+			this.toolTip.SetToolTip(this.button_BrowseComputer, "Choose a Folder");
 			this.button_BrowseComputer.Click += new System.EventHandler(this.button_BrowseComputer_Click);
 			// 
 			// textBox_PathComputer
 			// 
 			this.textBox_PathComputer.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-			this.textBox_PathComputer.Location = new System.Drawing.Point(59, 466);
-			this.textBox_PathComputer.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+			this.textBox_PathComputer.Location = new System.Drawing.Point(56, 492);
+			this.textBox_PathComputer.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
 			this.textBox_PathComputer.Name = "textBox_PathComputer";
-			this.textBox_PathComputer.Size = new System.Drawing.Size(272, 22);
+			this.textBox_PathComputer.Size = new System.Drawing.Size(276, 27);
 			this.textBox_PathComputer.TabIndex = 4;
 			// 
 			// folderBrowserDialog_Computer
@@ -203,13 +201,13 @@
 			// button_Bake
 			// 
 			this.button_Bake.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-			this.button_Bake.Location = new System.Drawing.Point(663, 431);
-			this.button_Bake.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+			this.button_Bake.Location = new System.Drawing.Point(666, 453);
+			this.button_Bake.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
 			this.button_Bake.Name = "button_Bake";
-			this.button_Bake.Size = new System.Drawing.Size(100, 28);
+			this.button_Bake.Size = new System.Drawing.Size(103, 28);
 			this.button_Bake.TabIndex = 6;
 			this.button_Bake.Text = "Bake";
-			this.toolTip.SetToolTip(this.button_Bake, "Execute the file actions");
+			this.toolTip.SetToolTip(this.button_Bake, "Merge folders with specified actions");
 			this.button_Bake.UseVisualStyleBackColor = true;
 			this.button_Bake.Click += new System.EventHandler(this.button_Bake_Click);
 			// 
@@ -217,10 +215,10 @@
 			// 
 			this.progressBar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-			this.progressBar.Location = new System.Drawing.Point(16, 431);
-			this.progressBar.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+			this.progressBar.Location = new System.Drawing.Point(13, 453);
+			this.progressBar.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
 			this.progressBar.Name = "progressBar";
-			this.progressBar.Size = new System.Drawing.Size(639, 28);
+			this.progressBar.Size = new System.Drawing.Size(645, 28);
 			this.progressBar.TabIndex = 5;
 			// 
 			// backgroundWorker_Bake
@@ -236,22 +234,24 @@
 			this.statusStrip.ImageScalingSize = new System.Drawing.Size(20, 20);
 			this.statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripStatusLabel_Dir});
-			this.statusStrip.Location = new System.Drawing.Point(0, 509);
+			this.statusStrip.Location = new System.Drawing.Point(0, 531);
 			this.statusStrip.Name = "statusStrip";
-			this.statusStrip.Size = new System.Drawing.Size(779, 22);
+			this.statusStrip.Size = new System.Drawing.Size(782, 22);
 			this.statusStrip.TabIndex = 0;
 			// 
 			// toolStripStatusLabel_Dir
 			// 
 			this.toolStripStatusLabel_Dir.Name = "toolStripStatusLabel_Dir";
-			this.toolStripStatusLabel_Dir.Size = new System.Drawing.Size(0, 17);
+			this.toolStripStatusLabel_Dir.Size = new System.Drawing.Size(767, 17);
+			this.toolStripStatusLabel_Dir.Spring = true;
+			this.toolStripStatusLabel_Dir.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
 			// 
 			// MainForm
 			// 
 			this.AcceptButton = this.button_Sync;
-			this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
-			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(779, 531);
+			this.AutoScaleDimensions = new System.Drawing.SizeF(120F, 120F);
+			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
+			this.ClientSize = new System.Drawing.Size(782, 553);
 			this.Controls.Add(this.statusStrip);
 			this.Controls.Add(this.button_Bake);
 			this.Controls.Add(this.progressBar);
@@ -261,9 +261,12 @@
 			this.Controls.Add(this.button_BrowseComputer);
 			this.Controls.Add(this.button_BrowseDesktop);
 			this.Controls.Add(this.button_Sync);
+			this.DoubleBuffered = true;
+			this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.KeyPreview = true;
-			this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+			this.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
+			this.MinimumSize = new System.Drawing.Size(800, 600);
 			this.Name = "MainForm";
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
 			this.Text = "DirSync";
