@@ -46,11 +46,7 @@ namespace DirSync
 				SyncList result = new SyncList();
 				DirectoryInfo dirInfo1 = new DirectoryInfo(dir1), dirInfo2 = new DirectoryInfo(dir2);
 
-				try
-				{
-					Diff(dirInfo1, dirInfo2, result);
-				}
-				catch (CancelationException) { }
+				Diff(dirInfo1, dirInfo2, result);
 
 				e.Result = result;
 			}
@@ -232,7 +228,7 @@ namespace DirSync
 				dir1 = textBox_PathComputer.Text;
 				dir2 = textBox_PathDesktop.Text;
 				backgroundWorker_Sync.RunWorkerAsync();
-				button_Sync.Text = "...";
+				button_Sync.Text = "Stop";
 				
 			}
 			else
@@ -241,74 +237,30 @@ namespace DirSync
 
 		object syncLock = new object();
 		string dir1, dir2;
-
-		[Serializable]
-		public class CancelationException : Exception
-		{
-			public CancelationException() { }
-			public CancelationException(string message) : base(message) { }
-			public CancelationException(string message, Exception inner) : base(message, inner) { }
-			protected CancelationException(
-			  System.Runtime.Serialization.SerializationInfo info,
-			  System.Runtime.Serialization.StreamingContext context)
-				: base(info, context) { }
-		}
-
-		private const int BYTES_TO_READ = sizeof(Int64);
-
-		public static bool FilesAreEqual(FileInfo first, FileInfo second)
-		{
-			if (first.Length != second.Length)
-				return false;
-
-			int iterations = (int)Math.Ceiling((double)first.Length / BYTES_TO_READ);
-
-			using (FileStream fs1 = first.OpenRead())
-			using (FileStream fs2 = second.OpenRead())
-			{
-				byte[] one = new byte[BYTES_TO_READ];
-				byte[] two = new byte[BYTES_TO_READ];
-
-				for (int i = 0; i < iterations; i++)
-				{
-					fs1.Read(one, 0, BYTES_TO_READ);
-					fs2.Read(two, 0, BYTES_TO_READ);
-
-					if (BitConverter.ToInt64(one, 0) != BitConverter.ToInt64(two, 0))
-						return false;
-				}
-			}
-
-			return true;
-		}
-
+		
 		private void Diff(DirectoryInfo node1, DirectoryInfo node2, SyncList syncList)
 		{
 			if (backgroundWorker_Sync.CancellationPending)
 				return;
 			if (statusStrip.InvokeRequired)
 				statusStrip.Invoke(new Action(() => toolStripStatusLabel_Dir.Text = node1.FullName.Substring(dir1.Length)));
-			var md5 = MD5.Create();
+
 			var files1 = node1.EnumerateFiles();
 			var files2 = node2.EnumerateFiles();
 			foreach (FileInfo file in files1)
 			{
+				if (backgroundWorker_Sync.CancellationPending)
+					return;
 				if (!file.isRelevant())
 					continue;
 				FileInfo mirror = files2.FirstOrDefault(f => string.Equals(f.Name, file.Name, StringComparison.InvariantCultureIgnoreCase));
 				if (mirror == null)
-				{
 					syncList.filePairs.Add(new Pair<FileInfo>(file, null));
-				}
-				else
-				{
-					if (file.Length != mirror.Length
-						|| (file.LastWriteTimeUtc - mirror.LastWriteTimeUtc).Duration() > TimeSpan.FromHours(1))
+				else if (mirror.isRelevant())
+					if (file.Length != mirror.Length || (file.LastWriteTimeUtc - mirror.LastWriteTimeUtc).Duration() > TimeSpan.FromMinutes(1))	// Because fuck Windows
 						syncList.filePairs.Add(new Pair<FileInfo>(file, mirror));
-					else if (file.LastWriteTimeUtc != mirror.LastWriteTimeUtc)
-						if (!FilesAreEqual(file, mirror))
-								syncList.filePairs.Add(new Pair<FileInfo>(file, mirror));
-				}
+					//else if (file.LastWriteTimeUtc != mirror.LastWriteTimeUtc && !FilesAreEqual(file, mirror))	// This is unnecessarily slow
+					//	syncList.filePairs.Add(new Pair<FileInfo>(file, mirror));									// And don't even think about hash checking
 			}
 			foreach (FileInfo file in files2)
 			{
@@ -317,18 +269,21 @@ namespace DirSync
 				if (!files1.Any(f => string.Equals(f.Name, file.Name, StringComparison.InvariantCultureIgnoreCase)))
 					syncList.filePairs.Add(new Pair<FileInfo>(null, file));
 			}
-			//
+			
 			var dirs1 = node1.EnumerateDirectories();
 			var dirs2 = node2.EnumerateDirectories();
 			foreach (DirectoryInfo dir in dirs1)
 			{
+				if (backgroundWorker_Sync.CancellationPending)
+					return;
 				if (!dir.isRelevant())
 					continue;
 				DirectoryInfo mirror = dirs2.FirstOrDefault(d => string.Equals(d.Name, dir.Name, StringComparison.InvariantCultureIgnoreCase));
 				if (mirror == null)
 					syncList.dirPairs.Add(new Pair<DirectoryInfo>(dir, null));
 				else
-					Diff(dir, mirror, syncList);
+					if (mirror.isRelevant())
+						Diff(dir, mirror, syncList);
 			}
 			foreach (DirectoryInfo dir in dirs2)
 			{
