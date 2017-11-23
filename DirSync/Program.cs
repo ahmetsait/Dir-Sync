@@ -22,7 +22,8 @@ namespace DirSync
 			Application.Run(new MainForm());
 		}
 
-		public static string exeDir = Path.GetDirectoryName(Application.ExecutablePath),
-			configPath = Path.Combine(exeDir, "path.ini");
+		public static readonly string exeDir = Path.GetDirectoryName(Application.ExecutablePath),
+			appData = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+			configPath = Path.Combine(appData, "DirSync\\path.ini");
 	}
 }
