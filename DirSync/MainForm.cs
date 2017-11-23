@@ -385,16 +385,10 @@ namespace DirSync
 						throw new ApplicationException("Logic Error");
 					}
 
-					if (path1 != null)
-					{
-						var explorer = new ProcessStartInfo("explorer.exe", "/select," + path1);
-						Process.Start(explorer);
-					}
-					if (path2 != null)
-					{
-						var explorer = new ProcessStartInfo("explorer.exe", "/select," + path2);
-						Process.Start(explorer);
-					}
+					Process.Start(new ProcessStartInfo("explorer.exe", path1 != null ? "/select," + path1 :
+						Path.Combine(dir1, Path.GetDirectoryName(path2).Substring(dir2.Length))));
+					Process.Start(new ProcessStartInfo("explorer.exe", path2 != null ? "/select," + path2 :
+						Path.Combine(dir2, Path.GetDirectoryName(path1).Substring(dir1.Length))));
 				}
 			}
 		}
