@@ -59,14 +59,6 @@ namespace DirSync
 			Second
 		}
 
-		public enum SyncAction
-		{
-			DoNothing,
-			CopyToLeft,
-			CopyToRight,
-			Delete
-		}
-
 		const string toLeft = "<--", toRight = "-->", delete = "X", doNothing = "●", tire = "-";
 
 		private void backgroundWorker_Sync_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
@@ -353,20 +345,14 @@ namespace DirSync
 						sub.Text = doNothing;
 						break;
 					default:
-						Debug.Fail("Logic error");
+						throw new ApplicationException("Logic Error");
 						break;
 				}
 			}
 		}
 		
-		class Bakery
-		{
-			public List<Tuple<DirectoryInfo, DirectoryInfo, SyncAction>> directories;
-			public List<Tuple<FileInfo, FileInfo, SyncAction>> files;
-		}
-		
 		object bakeLock = new object();
-		Bakery bakery;
+		BakeList bakeList;
 
 		private void MainForm_Load(object sender, EventArgs e)
 		{
@@ -394,8 +380,7 @@ namespace DirSync
 					}
 					else
 					{
-						Debug.Fail("Logic error");
-						return;
+						throw new ApplicationException("Logic Error");
 					}
 
 					if (path1 != null)
@@ -420,7 +405,7 @@ namespace DirSync
 				{
 
 				}
-
+					//TODO: Implement baking
 				progressBar.Value = progressBar.Minimum;
 				backgroundWorker_Bake.RunWorkerAsync();
 			}
@@ -435,7 +420,7 @@ namespace DirSync
 
 			}
 		}
-
+				//TODO: Implement baking
 		private void backgroundWorker_Bake_ProgressChanged(object sender, ProgressChangedEventArgs e)
 		{
 
@@ -445,5 +430,13 @@ namespace DirSync
 		{
 
 		}
+	}
+
+	public enum SyncAction
+	{
+		DoNothing,
+		CopyToLeft,
+		CopyToRight,
+		Delete
 	}
 }
