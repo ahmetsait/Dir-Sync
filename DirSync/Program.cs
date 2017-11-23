@@ -19,7 +19,6 @@ namespace DirSync
 			Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
 			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);
-			//Application.CurrentCulture = CultureInfo.InvariantCulture;
 			Application.Run(new MainForm());
 		}
 
