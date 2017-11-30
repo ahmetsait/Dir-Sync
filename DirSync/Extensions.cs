@@ -16,7 +16,7 @@ namespace DirSync
 		public static long GetTotalSize(this FileSystemInfo fileSystemInfo)
 		{
 			if (fileSystemInfo == null)
-				return 0L;
+				throw new ArgumentNullException("fileSystemInfo");
 			fileSystemInfo.Refresh();
 			if (fileSystemInfo is FileInfo)
 				return ((FileInfo)fileSystemInfo).Length;
