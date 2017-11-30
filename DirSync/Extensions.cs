@@ -1,5 +1,7 @@
 ﻿using System;
 using System.IO;
+using System.Runtime.InteropServices;
+using System.Windows.Forms;
 
 namespace DirSync
 {
@@ -67,6 +69,22 @@ namespace DirSync
 		{
 			return (!fileSystemInfo.Attributes.HasFlag(FileAttributes.System) &&
 				!fileSystemInfo.Attributes.HasFlag(FileAttributes.ReadOnly));
+		}
+
+		[DllImport("user32.dll")]
+		private static extern int SendMessage(IntPtr hWnd, Int32 wMsg, bool wParam, Int32 lParam);
+
+		private const int WM_SETREDRAW = 11;
+
+		public static void SuspendDrawing(this Control parent)
+		{
+			SendMessage(parent.Handle, WM_SETREDRAW, false, 0);
+		}
+
+		public static void ResumeDrawing(this Control parent)
+		{
+			SendMessage(parent.Handle, WM_SETREDRAW, true, 0);
+			parent.Refresh();
 		}
 	}
 }
