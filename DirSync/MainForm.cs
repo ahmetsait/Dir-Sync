@@ -52,6 +52,11 @@ namespace DirSync
 			}
 		}
 
+		private void backgroundWorker_Sync_ProgressChanged(object sender, ProgressChangedEventArgs e)
+		{
+			toolStripStatusLabel.Text = ((string)e.UserState);
+		}
+
 		enum PairNullness
 		{
 			None,
@@ -234,8 +239,7 @@ namespace DirSync
 		{
 			if (backgroundWorker_Sync.CancellationPending)
 				return;
-			if (statusStrip.InvokeRequired)
-				statusStrip.Invoke(new Action(() => toolStripStatusLabel_Dir.Text = node1.FullName.Substring(dir1.Length)));
+			backgroundWorker_Sync.ReportProgress(0, node1.FullName.Substring(dir1.Length));
 
 			var files1 = node1.EnumerateFiles();
 			var files2 = node2.EnumerateFiles();
