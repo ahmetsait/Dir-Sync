@@ -488,7 +488,7 @@ namespace DirSync
 						default:
 							break;
 					}
-					backgroundWorker_Bake.ReportProgress(++progress / maxProgress * 100, (bake.Item1 ?? bake.Item2).FullName.Substring(dir1.Length));
+					backgroundWorker_Bake.ReportProgress(++progress * 100 / maxProgress, (bake.Item1 ?? bake.Item2).FullName.Substring(dir1.Length));
 				}
 				foreach (var bake in bakeList.directories)
 				{
@@ -511,7 +511,7 @@ namespace DirSync
 						default:
 							break;
 					}
-					backgroundWorker_Bake.ReportProgress(++progress / maxProgress * 100, (bake.Item1 ?? bake.Item2).FullName.Substring(dir1.Length));
+					backgroundWorker_Bake.ReportProgress(++progress * 100 / maxProgress, (bake.Item1 ?? bake.Item2).FullName.Substring(dir1.Length));
 				}
 			}
 		}
