@@ -59,8 +59,10 @@
 			// 
 			// backgroundWorker_Sync
 			// 
+			this.backgroundWorker_Sync.WorkerReportsProgress = true;
 			this.backgroundWorker_Sync.WorkerSupportsCancellation = true;
 			this.backgroundWorker_Sync.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorker_Sync_DoWork);
+			this.backgroundWorker_Sync.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.backgroundWorker_Sync_ProgressChanged);
 			this.backgroundWorker_Sync.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.backgroundWorker_Sync_RunWorkerCompleted);
 			// 
 			// listView
