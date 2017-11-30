@@ -475,12 +475,12 @@ namespace DirSync
 					switch (bake.Item3)
 					{
 						case SyncAction.CopyToLeft:
-							if (bake.Item1.IsReadOnly)
+							if (bake.Item1 != null && bake.Item1.IsReadOnly)
 								bake.Item1.IsReadOnly = false;
 							bake.Item2.CopyTo(Extensions.CombinePaths(dir1, bake.Item2.FullName.Substring(dir2.Length)), true);
 							break;
 						case SyncAction.CopyToRight:
-							if (bake.Item2.IsReadOnly)
+							if (bake.Item2 != null && bake.Item2.IsReadOnly)
 								bake.Item2.IsReadOnly = false;
 							bake.Item1.CopyTo(Extensions.CombinePaths(dir2, bake.Item1.FullName.Substring(dir1.Length)), true);
 							break;
