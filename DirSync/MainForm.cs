@@ -234,9 +234,10 @@ namespace DirSync
 				}
 				dir1 = textBox_PathComputer.Text;
 				dir2 = textBox_PathDesktop.Text;
-				backgroundWorker_Sync.RunWorkerAsync();
 				button_Sync.Text = "Stop";
-				
+				button_Bake.Enabled = false;
+				progressBar.Value = progressBar.Minimum;
+				backgroundWorker_Sync.RunWorkerAsync();
 			}
 			else
 				backgroundWorker_Sync.CancelAsync();
@@ -365,8 +366,6 @@ namespace DirSync
 			}
 		}
 		
-		object bakeLock = new object();
-		BakeList bakeList;
 
 		private void MainForm_Load(object sender, EventArgs e)
 		{
@@ -409,13 +408,59 @@ namespace DirSync
 		{
 			if (!backgroundWorker_Bake.IsBusy)
 			{
+				BakeList bakeList = new BakeList();
 				foreach (ListViewItem item in listView.Items)
 				{
-					//TODO: Implement baking
+					if (item.Tag is Pair<FileInfo>)
+					{
+						Pair<FileInfo> filePair = (Pair<FileInfo>)item.Tag;
+						string actionStr = item.SubItems[3].Text;
+						switch (actionStr)
+						{
+							case toRight:
+								bakeList.files.Add(Tuple.Create(filePair.Item1, filePair.Item2, SyncAction.CopyToRight));
+								break;
+							case toLeft:
+								bakeList.files.Add(Tuple.Create(filePair.Item1, filePair.Item2, SyncAction.CopyToLeft));
+								break;
+							case delete:
+								bakeList.files.Add(Tuple.Create(filePair.Item1, filePair.Item2, SyncAction.Delete));
+								break;
+							case doNothing:
+								continue;
+							default:
+								break;
+						}
+					}
+					else if (item.Tag is Pair<DirectoryInfo>)
+					{
+						Pair<DirectoryInfo> dirPair = (Pair<DirectoryInfo>)item.Tag;
+						string actionStr = item.SubItems[3].Text;
+						switch (actionStr)
+						{
+							case toLeft:
+								bakeList.directories.Add(Tuple.Create(dirPair.Item1, dirPair.Item2, SyncAction.CopyToLeft));
+								break;
+							case toRight:
+								bakeList.directories.Add(Tuple.Create(dirPair.Item1, dirPair.Item2, SyncAction.CopyToRight));
+								break;
+							case delete:
+								bakeList.directories.Add(Tuple.Create(dirPair.Item1, dirPair.Item2, SyncAction.Delete));
+								break;
+							case doNothing:
+								continue;
+							default:
+								break;
+						}
+					}
+					else
+						throw new ApplicationException("Logic Error");
 				}
-
 				progressBar.Value = progressBar.Minimum;
-				backgroundWorker_Bake.RunWorkerAsync();
+				button_Sync.Enabled = false;
+				listView.Enabled = false;
+				button_Bake.Text = "Stop";
+				backgroundWorker_Bake.RunWorkerAsync(bakeList);
 			}
 			else
 				backgroundWorker_Bake.CancelAsync();
@@ -423,20 +468,84 @@ namespace DirSync
 
 		private void backgroundWorker_Bake_DoWork(object sender, DoWorkEventArgs e)
 		{
-			lock (bakeLock)
+			lock (syncLock)
 			{
-				//TODO: Implement baking
+				BakeList bakeList = (BakeList)e.Argument;
+				int maxProgress = bakeList.directories.Count + bakeList.files.Count, progress = 0;
+				foreach (var bake in bakeList.files)
+				{
+					bake.Item1?.Refresh();
+					bake.Item2?.Refresh();
+					switch (bake.Item3)
+					{
+						case SyncAction.CopyToLeft:
+							bake.Item2.CopyTo(Path.Combine(dir1, bake.Item2.FullName.Substring(dir2.Length + 1)), true);
+							break;
+						case SyncAction.CopyToRight:
+							bake.Item1.CopyTo(Path.Combine(dir2, bake.Item1.FullName.Substring(dir1.Length + 1)), true);
+							break;
+						case SyncAction.Delete:
+							bake.Item1?.Delete();
+							bake.Item2?.Delete();
+							break;
+						case SyncAction.DoNothing:
+							continue;
+						default:
+							break;
+					}
+					backgroundWorker_Bake.ReportProgress(++progress / maxProgress * 100, (bake.Item1 ?? bake.Item2).FullName.Substring(dir1.Length));
+				}
+				foreach (var bake in bakeList.directories)
+				{
+					bake.Item1?.Refresh();
+					bake.Item2?.Refresh();
+					switch (bake.Item3)
+					{
+						case SyncAction.CopyToLeft:
+							FileSystem.CopyDirectory(bake.Item2.FullName, Path.Combine(dir1, bake.Item2.FullName.Substring(dir2.Length + 1)));
+							break;
+						case SyncAction.CopyToRight:
+							FileSystem.CopyDirectory(bake.Item1.FullName, Path.Combine(dir2, bake.Item1.FullName.Substring(dir1.Length + 1)));
+							break;
+						case SyncAction.Delete:
+							bake.Item1?.Delete(true);
+							bake.Item2?.Delete(true);
+							break;
+						case SyncAction.DoNothing:
+							continue;
+						default:
+							break;
+					}
+					backgroundWorker_Bake.ReportProgress(++progress / maxProgress * 100, (bake.Item1 ?? bake.Item2).FullName.Substring(dir1.Length));
+				}
 			}
 		}
 
 		private void backgroundWorker_Bake_ProgressChanged(object sender, ProgressChangedEventArgs e)
 		{
-
+			progressBar.Value = e.ProgressPercentage;
+			toolStripStatusLabel.Text = (string)(e.UserState);
 		}
 
 		private void backgroundWorker_Bake_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
 		{
-
+			listView.Enabled = true;
+			button_Sync.Enabled = true;
+			button_Bake.Text = "Bake";
+			toolStripStatusLabel.Text = "";
+			if (e.Error != null)
+				MessageBox.Show(e.Error.ToString(), "Bake Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+			else
+			{
+				for (int i = listView.Items.Count - 1; i >= 0; i--)
+				{
+					var item = listView.Items[i];
+					string actionStr = item.SubItems[3].Text;
+					if (actionStr != doNothing)
+						item.Remove();
+				}
+				progressBar.Value = progressBar.Maximum;
+			}
 		}
 	}
 
