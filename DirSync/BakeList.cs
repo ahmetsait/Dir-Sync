@@ -1,12 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DirSync
 {
+	public enum SyncAction
+	{
+		DoNothing,
+		CopyToLeft,
+		CopyToRight,
+		Delete
+	}
+
 	public class BakeList
 	{
 		public List<Tuple<DirectoryInfo, DirectoryInfo, SyncAction>> directories;
