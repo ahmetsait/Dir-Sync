@@ -78,119 +78,129 @@ namespace DirSync
 			if (e.Result != null)
 			{
 				SyncList result = (SyncList)e.Result;
-				listView.Items.Clear();
-				foreach (var filePair in result.filePairs)
+				try
 				{
-					ListViewItem lvi = new ListViewItem();
-					lvi.Tag = filePair;
+					listView.SuspendLayout();
+					listView.SuspendDrawing();
+					listView.Items.Clear();
+					foreach (var filePair in result.filePairs)
+					{
+						ListViewItem lvi = new ListViewItem();
+						lvi.Tag = filePair;
 
-					if (filePair.Item1 != null)
-					{
-						lvi.Text = filePair.Item1.FullName;
-						lvi.SubItems.Add(filePair.Item1.GetFileSizeString());
-						lvi.SubItems.Add(filePair.Item1.LastWriteTime.ToString());
-					}
-					else
-					{
-						lvi.Text = tire;
- 						lvi.SubItems.Add(tire);
-						lvi.SubItems.Add(tire);
-					}
-					// Decide action
-					if (filePair.Item1 != null && filePair.Item2 == null)
-					{
-						lvi.SubItems.Add(toRight).Tag = PairNullness.Second;
-					}
-					else if (filePair.Item1 == null && filePair.Item2 != null)
-					{
-						lvi.SubItems.Add(toLeft).Tag = PairNullness.First;
-					}
-					else if (filePair.Item1 != null && filePair.Item2 != null)
-					{
-						if(filePair.Item1.LastWriteTime > filePair.Item2.LastWriteTime)
-							lvi.SubItems.Add(toRight).Tag = PairNullness.None;
-						else if(filePair.Item1.LastWriteTime < filePair.Item2.LastWriteTime)
-							lvi.SubItems.Add(toLeft).Tag = PairNullness.None;
-					}
-					else
-					{
-						throw new ApplicationException("Logic Error");
+						if (filePair.Item1 != null)
+						{
+							lvi.Text = filePair.Item1.FullName;
+							lvi.SubItems.Add(filePair.Item1.GetFileSizeString());
+							lvi.SubItems.Add(filePair.Item1.LastWriteTime.ToString());
+						}
+						else
+						{
+							lvi.Text = tire;
+							lvi.SubItems.Add(tire);
+							lvi.SubItems.Add(tire);
+						}
+						// Decide action
+						if (filePair.Item1 != null && filePair.Item2 == null)
+						{
+							lvi.SubItems.Add(toRight).Tag = PairNullness.Second;
+						}
+						else if (filePair.Item1 == null && filePair.Item2 != null)
+						{
+							lvi.SubItems.Add(toLeft).Tag = PairNullness.First;
+						}
+						else if (filePair.Item1 != null && filePair.Item2 != null)
+						{
+							if (filePair.Item1.LastWriteTime > filePair.Item2.LastWriteTime)
+								lvi.SubItems.Add(toRight).Tag = PairNullness.None;
+							else if (filePair.Item1.LastWriteTime < filePair.Item2.LastWriteTime)
+								lvi.SubItems.Add(toLeft).Tag = PairNullness.None;
+						}
+						else
+						{
+							throw new ApplicationException("Logic Error");
+						}
+
+						if (filePair.Item2 != null)
+						{
+							lvi.SubItems.Add(filePair.Item2.LastWriteTime.ToString());
+							lvi.SubItems.Add(filePair.Item2.FullName);
+							lvi.SubItems.Add(filePair.Item2.GetFileSizeString());
+						}
+						else
+						{
+							lvi.SubItems.Add(tire);
+							lvi.SubItems.Add(tire);
+							lvi.SubItems.Add(tire);
+						}
+
+						lvi.Group = listView.Groups[1];
+						listView.Items.Add(lvi);
 					}
 
-					if (filePair.Item2 != null)
+					foreach (var dirPair in result.dirPairs)
 					{
-						lvi.SubItems.Add(filePair.Item2.LastWriteTime.ToString());
-						lvi.SubItems.Add(filePair.Item2.FullName);
- 						lvi.SubItems.Add(filePair.Item2.GetFileSizeString());
-					}
-					else
-					{
- 						lvi.SubItems.Add(tire);
- 						lvi.SubItems.Add(tire);
-						lvi.SubItems.Add(tire);
-					}
+						ListViewItem lvi = new ListViewItem();
+						lvi.Tag = dirPair;
 
-					lvi.Group = listView.Groups[1];
-					listView.Items.Add(lvi);
+						if (dirPair.Item1 != null)
+						{
+							lvi.Text = dirPair.Item1.FullName;
+							lvi.SubItems.Add(dirPair.Item1.GetFileSizeString());
+							lvi.SubItems.Add(dirPair.Item1.LastWriteTime.ToString());
+						}
+						else
+						{
+							lvi.Text = tire;
+							lvi.SubItems.Add(tire);
+							lvi.SubItems.Add(tire);
+						}
+						// Decide action
+						if (dirPair.Item1 != null && dirPair.Item2 == null)
+						{
+							lvi.SubItems.Add(toRight).Tag = PairNullness.Second;
+						}
+						else if (dirPair.Item1 == null && dirPair.Item2 != null)
+						{
+							lvi.SubItems.Add(toLeft).Tag = PairNullness.First;
+						}
+						else if (dirPair.Item1 != null && dirPair.Item2 != null)
+						{
+							if (dirPair.Item1.LastWriteTime > dirPair.Item2.LastWriteTime)
+							{
+								lvi.SubItems.Add(toRight).Tag = PairNullness.None;
+							}
+							else if (dirPair.Item1.LastWriteTime < dirPair.Item2.LastWriteTime)
+							{
+								lvi.SubItems.Add(toLeft).Tag = PairNullness.None;
+							}
+						}
+						else
+						{
+							throw new ApplicationException("Logic Error");
+						}
+
+						if (dirPair.Item2 != null)
+						{
+							lvi.SubItems.Add(dirPair.Item2.LastWriteTime.ToString());
+							lvi.SubItems.Add(dirPair.Item2.FullName);
+							lvi.SubItems.Add(dirPair.Item2.GetFileSizeString());
+						}
+						else
+						{
+							lvi.SubItems.Add(tire);
+							lvi.SubItems.Add(tire);
+							lvi.SubItems.Add(tire);
+						}
+
+						lvi.Group = listView.Groups[0];
+						listView.Items.Add(lvi);
+					}
 				}
-				
-				foreach (var dirPair in result.dirPairs)
+				finally
 				{
-					ListViewItem lvi = new ListViewItem();
-					lvi.Tag = dirPair;
-
-					if (dirPair.Item1 != null)
-					{
-						lvi.Text = dirPair.Item1.FullName;
-						lvi.SubItems.Add(dirPair.Item1.GetFileSizeString());
-						lvi.SubItems.Add(dirPair.Item1.LastWriteTime.ToString());
-					}
-					else
-					{
-						lvi.Text = tire;
- 						lvi.SubItems.Add(tire);
-						lvi.SubItems.Add(tire);
-					}
-					// Decide action
-					if (dirPair.Item1 != null && dirPair.Item2 == null)
-					{
-						lvi.SubItems.Add(toRight).Tag = PairNullness.Second;
-					}
-					else if (dirPair.Item1 == null && dirPair.Item2 != null)
-					{
-						lvi.SubItems.Add(toLeft).Tag = PairNullness.First;
-					}
-					else if (dirPair.Item1 != null && dirPair.Item2 != null)
-					{
-						if(dirPair.Item1.LastWriteTime > dirPair.Item2.LastWriteTime)
-						{
-							lvi.SubItems.Add(toRight).Tag = PairNullness.None;
-						}
-						else if(dirPair.Item1.LastWriteTime < dirPair.Item2.LastWriteTime)
-						{
-							lvi.SubItems.Add(toLeft).Tag = PairNullness.None;
-						}
-					}
-					else
-					{
-						throw new ApplicationException("Logic Error");
-					}
-
-					if (dirPair.Item2 != null)
-					{
-						lvi.SubItems.Add(dirPair.Item2.LastWriteTime.ToString());
-						lvi.SubItems.Add(dirPair.Item2.FullName);
- 						lvi.SubItems.Add(dirPair.Item2.GetFileSizeString());
-					}
-					else
-					{
- 						lvi.SubItems.Add(tire);
- 						lvi.SubItems.Add(tire);
-						lvi.SubItems.Add(tire);
-					}
-
-					lvi.Group = listView.Groups[0];
-					listView.Items.Add(lvi);
+					listView.ResumeDrawing();
+					listView.ResumeLayout();
 				}
 				listView.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
 			}
