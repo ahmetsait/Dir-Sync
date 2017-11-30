@@ -330,39 +330,37 @@ namespace DirSync
 
 		private void listView_MouseClick(object sender, MouseEventArgs e)
 		{
-			if (!Monitor.TryEnter(bakeLock))
-				return;
-
-			if (e.Button == MouseButtons.Right && listView.SelectedItems.Count == 1)
+			if (e.Button == MouseButtons.Right)
 			{
-				ListViewItem item = listView.SelectedItems[0];
-				var sub = item.SubItems[3];
-				string act = sub.Text;
-				PairNullness nullness = (PairNullness)sub.Tag;
-
-				switch (act)
+				foreach (ListViewItem item in listView.SelectedItems)
 				{
-					case doNothing:
-						if (nullness != PairNullness.First)
-							sub.Text = toRight;
-						else
-							goto case toRight;
-						break;
-					case toRight:
-						if (nullness != PairNullness.Second)
-							sub.Text = toLeft;
-						else
-							goto case toLeft;
-						break;
-					case toLeft:
-						sub.Text = delete;
-						break;
-					case delete:
-						sub.Text = doNothing;
-						break;
-					default:
-						throw new ApplicationException("Logic Error");
-						break;
+					var sub = item.SubItems[3];
+					string act = sub.Text;
+					PairNullness nullness = (PairNullness)sub.Tag;
+
+					switch (act)
+					{
+						case doNothing:
+							if (nullness != PairNullness.First)
+								sub.Text = toRight;
+							else
+								goto case toRight;
+							break;
+						case toRight:
+							if (nullness != PairNullness.Second)
+								sub.Text = toLeft;
+							else
+								goto case toLeft;
+							break;
+						case toLeft:
+							sub.Text = delete;
+							break;
+						case delete:
+							sub.Text = doNothing;
+							break;
+						default:
+							throw new ApplicationException("Logic Error");
+					}
 				}
 			}
 		}

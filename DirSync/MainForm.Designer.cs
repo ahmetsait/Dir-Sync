@@ -89,7 +89,6 @@
             listViewGroup2});
 			this.listView.Location = new System.Drawing.Point(13, 15);
 			this.listView.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
-			this.listView.MultiSelect = false;
 			this.listView.Name = "listView";
 			this.listView.Size = new System.Drawing.Size(756, 430);
 			this.listView.TabIndex = 1;
