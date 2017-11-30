@@ -53,7 +53,7 @@
 			this.progressBar = new System.Windows.Forms.ProgressBar();
 			this.backgroundWorker_Bake = new System.ComponentModel.BackgroundWorker();
 			this.statusStrip = new System.Windows.Forms.StatusStrip();
-			this.toolStripStatusLabel_Dir = new System.Windows.Forms.ToolStripStatusLabel();
+			this.toolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
 			this.statusStrip.SuspendLayout();
 			this.SuspendLayout();
 			// 
@@ -234,18 +234,18 @@
 			// 
 			this.statusStrip.ImageScalingSize = new System.Drawing.Size(20, 20);
 			this.statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripStatusLabel_Dir});
-			this.statusStrip.Location = new System.Drawing.Point(0, 531);
+            this.toolStripStatusLabel});
+			this.statusStrip.Location = new System.Drawing.Point(0, 529);
 			this.statusStrip.Name = "statusStrip";
-			this.statusStrip.Size = new System.Drawing.Size(782, 22);
+			this.statusStrip.Size = new System.Drawing.Size(782, 24);
 			this.statusStrip.TabIndex = 0;
 			// 
-			// toolStripStatusLabel_Dir
+			// toolStripStatusLabel
 			// 
-			this.toolStripStatusLabel_Dir.Name = "toolStripStatusLabel_Dir";
-			this.toolStripStatusLabel_Dir.Size = new System.Drawing.Size(767, 17);
-			this.toolStripStatusLabel_Dir.Spring = true;
-			this.toolStripStatusLabel_Dir.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+			this.toolStripStatusLabel.Name = "toolStripStatusLabel";
+			this.toolStripStatusLabel.Size = new System.Drawing.Size(728, 19);
+			this.toolStripStatusLabel.Spring = true;
+			this.toolStripStatusLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
 			// 
 			// MainForm
 			// 
@@ -273,7 +273,6 @@
 			this.Text = "DirSync";
 			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
 			this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.MainForm_FormClosed);
-			this.Load += new System.EventHandler(this.MainForm_Load);
 			this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.MainForm_KeyDown);
 			this.statusStrip.ResumeLayout(false);
 			this.statusStrip.PerformLayout();
@@ -305,7 +304,7 @@
 		private System.Windows.Forms.Button button_Bake;
 		private System.ComponentModel.BackgroundWorker backgroundWorker_Bake;
 		private System.Windows.Forms.StatusStrip statusStrip;
-		private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel_Dir;
+		private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel;
 	}
 }
 

@@ -39,6 +39,9 @@ namespace DirSync
 			MessageBox.Show(e.Exception.ToString(), "Unhandled Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 		}
 
+		object syncLock = new object();
+		string dir1, dir2;
+
 		private void backgroundWorker_Sync_DoWork(object sender, DoWorkEventArgs e)
 		{
 			lock (syncLock)
@@ -69,7 +72,8 @@ namespace DirSync
 		private void backgroundWorker_Sync_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
 		{
 			button_Sync.Text = "Sync";
-			toolStripStatusLabel_Dir.Text = "";
+			button_Bake.Enabled = true;
+			toolStripStatusLabel.Text = "";
 			if(e.Error != null)
 			{
 				MessageBox.Show(e.Error.ToString(), "Sync Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -243,9 +247,6 @@ namespace DirSync
 				backgroundWorker_Sync.CancelAsync();
 		}
 
-		object syncLock = new object();
-		string dir1, dir2;
-		
 		private void Diff(DirectoryInfo node1, DirectoryInfo node2, SyncList syncList)
 		{
 			if (backgroundWorker_Sync.CancellationPending)
@@ -366,15 +367,9 @@ namespace DirSync
 			}
 		}
 		
-
-		private void MainForm_Load(object sender, EventArgs e)
-		{
-
-		}
-
 		private void listView_MouseDoubleClick(object sender, MouseEventArgs e)
 		{
-			if (e.Button == System.Windows.Forms.MouseButtons.Left)
+			if (e.Button == MouseButtons.Left)
 			{
 				foreach (ListViewItem item in listView.SelectedItems)
 				{
@@ -403,7 +398,7 @@ namespace DirSync
 				}
 			}
 		}
-
+		
 		private void button_Bake_Click(object sender, EventArgs e)
 		{
 			if (!backgroundWorker_Bake.IsBusy)
@@ -547,13 +542,5 @@ namespace DirSync
 				progressBar.Value = progressBar.Maximum;
 			}
 		}
-	}
-
-	public enum SyncAction
-	{
-		DoNothing,
-		CopyToLeft,
-		CopyToRight,
-		Delete
 	}
 }
