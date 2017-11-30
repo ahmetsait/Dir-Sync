@@ -69,6 +69,9 @@ namespace DirSync
 		{
 			return (!fileSystemInfo.Attributes.HasFlag(FileAttributes.System) &&
 				!fileSystemInfo.Attributes.HasFlag(FileAttributes.ReadOnly));
+		public static string CombinePaths(string path1, string path2)
+		{
+			return path1.TrimEnd('\\') + '\\' + path2.TrimStart('\\');
 		}
 
 		[DllImport("user32.dll")]

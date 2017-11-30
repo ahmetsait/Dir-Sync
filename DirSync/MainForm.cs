@@ -391,10 +391,10 @@ namespace DirSync
 						throw new ApplicationException("Logic Error");
 					}
 
-					Process.Start(new ProcessStartInfo("explorer.exe", path1 != null ? "/select," + path1 :
-						Path.Combine(dir1, Path.GetDirectoryName(path2).Substring(dir2.Length))));
-					Process.Start(new ProcessStartInfo("explorer.exe", path2 != null ? "/select," + path2 :
-						Path.Combine(dir2, Path.GetDirectoryName(path1).Substring(dir1.Length))));
+					path1 = path1 != null ? "/select," + path1 : Extensions.CombinePaths(dir1, Path.GetDirectoryName(path2).Substring(dir2.Length));
+					path2 = path2 != null ? "/select," + path2 : Extensions.CombinePaths(dir2, Path.GetDirectoryName(path1).Substring(dir1.Length));
+					Process.Start(new ProcessStartInfo("explorer.exe", path1));
+					Process.Start(new ProcessStartInfo("explorer.exe", path2));
 				}
 			}
 		}
@@ -474,10 +474,10 @@ namespace DirSync
 					switch (bake.Item3)
 					{
 						case SyncAction.CopyToLeft:
-							bake.Item2.CopyTo(Path.Combine(dir1, bake.Item2.FullName.Substring(dir2.Length + 1)), true);
+							bake.Item2.CopyTo(Extensions.CombinePaths(dir1, bake.Item2.FullName.Substring(dir2.Length)), true);
 							break;
 						case SyncAction.CopyToRight:
-							bake.Item1.CopyTo(Path.Combine(dir2, bake.Item1.FullName.Substring(dir1.Length + 1)), true);
+							bake.Item1.CopyTo(Extensions.CombinePaths(dir2, bake.Item1.FullName.Substring(dir1.Length)), true);
 							break;
 						case SyncAction.Delete:
 							bake.Item1?.Delete();
@@ -497,10 +497,10 @@ namespace DirSync
 					switch (bake.Item3)
 					{
 						case SyncAction.CopyToLeft:
-							FileSystem.CopyDirectory(bake.Item2.FullName, Path.Combine(dir1, bake.Item2.FullName.Substring(dir2.Length + 1)));
+							FileSystem.CopyDirectory(bake.Item2.FullName, Extensions.CombinePaths(dir1, bake.Item2.FullName.Substring(dir2.Length)));
 							break;
 						case SyncAction.CopyToRight:
-							FileSystem.CopyDirectory(bake.Item1.FullName, Path.Combine(dir2, bake.Item1.FullName.Substring(dir1.Length + 1)));
+							FileSystem.CopyDirectory(bake.Item1.FullName, Extensions.CombinePaths(dir2, bake.Item1.FullName.Substring(dir1.Length)));
 							break;
 						case SyncAction.Delete:
 							bake.Item1?.Delete(true);
