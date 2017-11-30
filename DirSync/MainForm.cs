@@ -115,7 +115,12 @@ namespace DirSync
 						}
 						else if (filePair.Item1 != null && filePair.Item2 != null)
 						{
-							if (filePair.Item1.LastWriteTime > filePair.Item2.LastWriteTime)
+							if (filePair.Item1.IsReadOnly || filePair.Item2.IsReadOnly)
+							{
+								lvi.SubItems.Add(doNothing).Tag = PairNullness.None;
+								lvi.ForeColor = Color.Sienna;
+							}
+							else if (filePair.Item1.LastWriteTime > filePair.Item2.LastWriteTime)
 								lvi.SubItems.Add(toRight).Tag = PairNullness.None;
 							else if (filePair.Item1.LastWriteTime < filePair.Item2.LastWriteTime)
 								lvi.SubItems.Add(toLeft).Tag = PairNullness.None;
@@ -171,13 +176,9 @@ namespace DirSync
 						else if (dirPair.Item1 != null && dirPair.Item2 != null)
 						{
 							if (dirPair.Item1.LastWriteTime > dirPair.Item2.LastWriteTime)
-							{
 								lvi.SubItems.Add(toRight).Tag = PairNullness.None;
-							}
 							else if (dirPair.Item1.LastWriteTime < dirPair.Item2.LastWriteTime)
-							{
 								lvi.SubItems.Add(toLeft).Tag = PairNullness.None;
-							}
 						}
 						else
 						{
@@ -474,9 +475,13 @@ namespace DirSync
 					switch (bake.Item3)
 					{
 						case SyncAction.CopyToLeft:
+							if (bake.Item1.IsReadOnly)
+								bake.Item1.IsReadOnly = false;
 							bake.Item2.CopyTo(Extensions.CombinePaths(dir1, bake.Item2.FullName.Substring(dir2.Length)), true);
 							break;
 						case SyncAction.CopyToRight:
+							if (bake.Item2.IsReadOnly)
+								bake.Item2.IsReadOnly = false;
 							bake.Item1.CopyTo(Extensions.CombinePaths(dir2, bake.Item1.FullName.Substring(dir1.Length)), true);
 							break;
 						case SyncAction.Delete:
