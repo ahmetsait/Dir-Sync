@@ -39,6 +39,7 @@ namespace DirSync
 			MessageBox.Show(e.Exception.ToString(), "Unhandled Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 		}
 
+		Stopwatch stopWatch = new Stopwatch();
 		object syncLock = new object();
 		string dir1, dir2;
 
@@ -71,10 +72,11 @@ namespace DirSync
 
 		private void backgroundWorker_Sync_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
 		{
+			stopWatch.Stop();
 			button_Sync.Text = "Sync";
 			button_Bake.Enabled = true;
-			toolStripStatusLabel.Text = "";
-			if(e.Error != null)
+			toolStripStatusLabel.Text = "Synced: " + stopWatch.Elapsed;
+			if (e.Error != null)
 			{
 				MessageBox.Show(e.Error.ToString(), "Sync Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 				return;
@@ -242,6 +244,7 @@ namespace DirSync
 				button_Sync.Text = "Stop";
 				button_Bake.Enabled = false;
 				progressBar.Value = progressBar.Minimum;
+				stopWatch.Restart();
 				backgroundWorker_Sync.RunWorkerAsync();
 			}
 			else
@@ -456,6 +459,7 @@ namespace DirSync
 				button_Sync.Enabled = false;
 				listView.Enabled = false;
 				button_Bake.Text = "Stop";
+				stopWatch.Restart();
 				backgroundWorker_Bake.RunWorkerAsync(bakeList);
 			}
 			else
@@ -529,10 +533,11 @@ namespace DirSync
 
 		private void backgroundWorker_Bake_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
 		{
+			stopWatch.Stop();
 			listView.Enabled = true;
 			button_Sync.Enabled = true;
 			button_Bake.Text = "Bake";
-			toolStripStatusLabel.Text = "";
+			toolStripStatusLabel.Text = "Baked: " + stopWatch.Elapsed;
 			if (e.Error != null)
 				MessageBox.Show(e.Error.ToString(), "Bake Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 			else
