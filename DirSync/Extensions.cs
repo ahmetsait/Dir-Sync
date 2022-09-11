@@ -67,16 +67,11 @@ namespace DirSync
 		/// </summary>
 		public static bool isRelevant(this FileSystemInfo fileSystemInfo)
 		{
-			return (!fileSystemInfo.Attributes.HasFlag(FileAttributes.System));
-		}
-
-		public static string CombinePaths(string path1, string path2)
-		{
-			return path1.TrimEnd('\\') + '\\' + path2.TrimStart('\\');
+			return !fileSystemInfo.Attributes.HasFlag(FileAttributes.System);
 		}
 
 		[DllImport("user32.dll")]
-		private static extern int SendMessage(IntPtr hWnd, int wMsg, bool wParam, int lParam); //HACK: Not sure bool size matches, seems like vodoo magic
+		private static extern int SendMessage(IntPtr hWnd, int wMsg, bool wParam, int lParam);
 
 		private const int WM_SETREDRAW = 11;
 

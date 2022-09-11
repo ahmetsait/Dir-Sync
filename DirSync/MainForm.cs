@@ -1,21 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Microsoft.VisualBasic.FileIO;
+using System;
 using System.ComponentModel;
-using System.Drawing;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using System.IO;
-using Microsoft.VisualBasic.FileIO;
-using System.Threading;
 using System.Diagnostics;
-using System.Security.Cryptography;
+using System.Drawing;
+using System.IO;
 using System.Linq;
-using System.Globalization;
+using System.Text;
+using System.Threading;
+using System.Windows.Forms;
 
 namespace DirSync
 {
-	public partial class MainForm : Form
+    public partial class MainForm : Form
 	{
 		public MainForm()
 		{
@@ -395,8 +391,8 @@ namespace DirSync
 						throw new ApplicationException("Logic Error");
 					}
 
-					path1 = path1 != null ? "/select," + path1 : Extensions.CombinePaths(dir1, Path.GetDirectoryName(path2).Substring(dir2.Length));
-					path2 = path2 != null ? "/select," + path2 : Extensions.CombinePaths(dir2, Path.GetDirectoryName(path1).Substring(dir1.Length));
+					path1 = path1 != null ? "/select," + path1 : Path.Combine(dir1, Path.GetDirectoryName(path2).Substring(dir2.Length));
+					path2 = path2 != null ? "/select," + path2 : Path.Combine(dir2, Path.GetDirectoryName(path1).Substring(dir1.Length));
 					Process.Start(new ProcessStartInfo("explorer.exe", path1));
 					Process.Start(new ProcessStartInfo("explorer.exe", path2));
 				}
@@ -481,12 +477,12 @@ namespace DirSync
 						case SyncAction.CopyToLeft:
 							if (bake.Item1 != null && bake.Item1.IsReadOnly)
 								bake.Item1.IsReadOnly = false;
-							bake.Item2.CopyTo(Extensions.CombinePaths(dir1, bake.Item2.FullName.Substring(dir2.Length)), true);
+							bake.Item2.CopyTo(Path.Combine(dir1, bake.Item2.FullName.Substring(dir2.Length)), true);
 							break;
 						case SyncAction.CopyToRight:
 							if (bake.Item2 != null && bake.Item2.IsReadOnly)
 								bake.Item2.IsReadOnly = false;
-							bake.Item1.CopyTo(Extensions.CombinePaths(dir2, bake.Item1.FullName.Substring(dir1.Length)), true);
+							bake.Item1.CopyTo(Path.Combine(dir2, bake.Item1.FullName.Substring(dir1.Length)), true);
 							break;
 						case SyncAction.Delete:
 							bake.Item1?.Delete();
@@ -506,10 +502,10 @@ namespace DirSync
 					switch (bake.Item3)
 					{
 						case SyncAction.CopyToLeft:
-							FileSystem.CopyDirectory(bake.Item2.FullName, Extensions.CombinePaths(dir1, bake.Item2.FullName.Substring(dir2.Length)));
+							FileSystem.CopyDirectory(bake.Item2.FullName, Path.Combine(dir1, bake.Item2.FullName.Substring(dir2.Length)));
 							break;
 						case SyncAction.CopyToRight:
-							FileSystem.CopyDirectory(bake.Item1.FullName, Extensions.CombinePaths(dir2, bake.Item1.FullName.Substring(dir1.Length)));
+							FileSystem.CopyDirectory(bake.Item1.FullName, Path.Combine(dir2, bake.Item1.FullName.Substring(dir1.Length)));
 							break;
 						case SyncAction.Delete:
 							bake.Item1?.Delete(true);

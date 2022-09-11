@@ -9,9 +9,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("Dir Sync")]
 [assembly: AssemblyDescription("Graphical directory synchronization tool")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Ahmet Sait Koçak")]
+[assembly: AssemblyCompany("Ahmet Sait")]
 [assembly: AssemblyProduct("Dir Sync")]
-[assembly: AssemblyCopyright("Copyright © Ahmet Sait Koçak 2017")]
+[assembly: AssemblyCopyright("Copyright © Ahmet Sait 2022")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
