@@ -2,7 +2,7 @@
 
 ![Dir Sync Icon](icon.png)  
 Dir Sync  
-[![Platforms](https://img.shields.io/badge/platform-windows-blue)](https://github.com/ahmetsait/Dir-Sync/releases) [![Latest Release](https://img.shields.io/github/v/release/ahmetsait/Dir-Sync)](https://github.com/ahmetsait/Dir-Sync/releases/latest) [![Downloads](https://img.shields.io/github/downloads/ahmetsait/Dir-Sync/total)](https://github.com/ahmetsait/Dir-Sync/releases) [![License](https://img.shields.io/github/license/ahmetsait/Dir-Sync)](LICENSE)
+[![Platforms](https://img.shields.io/badge/platform-windows-blue)](https://github.com/ahmetsait/Dir-Sync/releases) [![Latest Release](https://img.shields.io/github/v/release/ahmetsait/Dir-Sync)](https://github.com/ahmetsait/Dir-Sync/releases/latest) [![Downloads](https://img.shields.io/github/downloads/ahmetsait/Dir-Sync/total)](https://github.com/ahmetsait/Dir-Sync/releases) [![License](https://img.shields.io/github/license/ahmetsait/Dir-Sync)](LICENSE) [![Sponsor](https://img.shields.io/badge/Sponsor-black?logo=githubsponsors)](https://github.com/sponsors/ahmetsait)
 ========
 Graphical Directory Synchronization Tool
 </div>
